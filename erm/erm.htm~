@@ -1,0 +1,29 @@
+<html>
+  <head></head>
+  <body>
+    <div id="game"></div>
+    <script type="text/javascript" src="https://rawgithub.com/craftyjs/Crafty/release/dist/crafty-min.js"></script>
+    <script>
+      Crafty.init(640,480, document.getElementById('game'));
+      
+      // View
+      Crafty.viewport.scale(3);
+
+      // Character  
+      Crafty.sprite("hito_sheet.png", {hito:[1,1,16,16]});
+      var hito_entity = Crafty.e("2D, DOM, hito, Twoway")
+      .twoway(2, 2)
+      .gravity('Floor');
+      
+      
+      // Remder Map      
+      Crafty.sprite("tile.png", {tile:[0,0,16,16]});
+      var tile_entity = Crafty.e("Floor, 2D, Canvas, tile")
+      .attr({x: 0, y: 50, w: 16, h: 16});   
+      
+            
+      
+      
+    </script>
+  </body>
+</html>
