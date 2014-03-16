@@ -1,60 +1,40 @@
 // load.js
 // ~~~~~~~
-// Initialize
 // Load all our external resources.
 
-
-Crafty.scene("loading", function() {
-  Crafty.load(["sounds/gem.wav",
-               "sprites/tile.png",
-               "sprites/hito_sheet.png",
-               "sprites/gem.png"
-  ], function() {
-    Crafty.scene("start"); //when everything is loaded, run the main scene
-  });
-  
-  // Black background with some loading text
-  Crafty.background("#000");
-  Crafty.e("2D, DOM, Text").attr({w: 100, h: 20, x: 150, y: 120})
-    .text("Loading")
-    .css({"text-align": "center"})
-    .textColor("#FF0000");
- });
-
-
+      Crafty.init(640,480, document.getElementById('game'));
+      Crafty.background('#000000 url(sprites/sky2.png) repeat center center');
       
-// Load Sounds
-Crafty.audio.add("gem", "sounds/gem.wav");   
+      // Load Sounds
+      Crafty.audio.add("walk", "sounds/foot.wav");      
+      Crafty.audio.add("gem", "sounds/gem.wav");   
       
-// Load Tiles from Map Sprite Sheet
-Crafty.sprite("sprites/tile.png", {
-  tile1:[0,0,16,16],
-  tile2:[16,0,16,16],
-  tile3:[32,0,16,16],
-  tile4:[48,0,16,16],
-  tile5:[0,16,16,16],
-  tile6:[16,16,16,16],
-  tile7:[32,16,16,16],
-  tile8:[48,16,16,16],
-  tile9:[0,32,16,16],
-  tile10:[16,32,16,16],
-  tile11:[32,32,16,16],
-  tile12:[48,32,16,16],
-  tile13:[0,48,16,16],
-  tile14:[16,48,16,16],
-  tile15:[32,48,16,16],
-  tile16:[48,48,16,16]
- });
-
-// Player Sprite 
-Crafty.sprite("sprites/hito_sheet.png", {
-  HitoSprite:[0,0,16,16]
-});
-// Item Sprites
-Crafty.sprite("sprites/gem.png", {
-  GemSprite1:[0,0,16,16],
-  GemSprite2:[16,0,16,16],
-  GemSprite3:[32,0,16,16]
+      // Load Sprites
+      Crafty.sprite("sprites/tile.png", {
+      	 tile1:[0,0,16,16],
+      	 tile2:[16,0,16,16],
+      	 tile3:[32,0,16,16],
+      	 tile4:[48,0,16,16],
+      	 tile5:[0,16,16,16],
+      	 tile6:[16,16,16,16],
+      	 tile7:[32,16,16,16],
+      	 tile8:[48,16,16,16],
+      	 tile9:[0,32,16,16],
+      	 tile10:[16,32,16,16],
+      	 tile11:[32,32,16,16],
+      	 tile12:[48,32,16,16],
+      	 tile13:[0,48,16,16],
+      	 tile14:[16,48,16,16],
+      	 tile15:[32,48,16,16],
+      	 tile16:[48,48,16,16]
+      });
+      Crafty.sprite("sprites/hito_sheet.png", {
+      	HitoSprite:[0,0,16,16]
+      });
+      Crafty.sprite("sprites/gem.png", {
+      	GemSprite1:[0,0,16,16],
+      	GemSprite2:[16,0,16,16],
+      	GemSprite3:[32,0,16,16]
       });
 
       function drawMap() {
@@ -148,13 +128,14 @@ Crafty.sprite("sprites/gem.png", {
       	    	// Items
       	    	
       	    	else if (map.platforms[iTile] == '@') {
-                var tile_entity = Crafty.e("2D, Canvas, SpriteAnimation, Gem, GemSprite1")
+                var tile_entity = Crafty.e("2D, Canvas, SpriteAnimation, GemSprite1")
                 .attr({x: i*16, y: j*16, w: 16, h: 16})
                 .reel('gemSparkle', 500, [[0, 0], [16, 0], [32, 0], [16, 0]])
                 .animate('gemSparkle', -1); 
       	    	          	    	    
       	    	}
 
-              }
-            }
-          }
+        }   
+      } 
+   }
+   

@@ -12,8 +12,6 @@
   <script type="text/javascript" src="lib/crafty.js"></script>
   <script type="text/javascript" src="src/map1.js"></script>
   <script type="text/javascript" src="src/load.js"></script>
-  <script type="text/javascript" src="src/start.js"></script>
-  <script type="text/javascript" src="src/gameOver.js"></script>
   <script type="text/javascript" src="src/game.js"></script>
 </head>
 <body bgcolor="#000000">

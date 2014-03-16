@@ -1,66 +1,95 @@
+Crafty.init(640,480, document.getElementById('game'));
 
-      var gemsCollected = 0; 
-      
-      // --- Character ---
-     
-      var hito_entity = Crafty.e("2D, DOM, HitoSprite, SpriteAnimation, Twoway")
-      
-      .twoway(2, 3)
-      .gravity('Floor')
-      
-      .reel('walkRight', 500, [[0, 17], [17, 17], [34, 17], [17, 17]])
-      .reel('walkLeft', 500, [[0, 34], [17, 34], [34, 34], [17, 34]])
-      .reel('idle', 1000, [[0, 0], [17, 0], [34, 0]])
 
-				.addComponent("Collision").bind('Moved', function(from) {
-      if(this.hit('Wall')) {
-          this.attr({x: from.x});
-        }
-      })   
-      .onHit("GemSprite1",function(hit) {
-        hit[0].obj.destroy();
-        gemsCollected++;   
-        Crafty.audio.play("gem", 1);
-        if (gemsCollected > 2) {
-        	 Crafty.audio.stop();
-		    Crafty.enterScene("gameOver");		    
-		  }
-      })
+  
+Crafty.defineScene("game", function() {
 
-      .bind('NewDirection', function(data) {
-      if (data.x > 0) {
-        this.animate('walkRight', -1);
-        //Crafty.audio.play("walk", -1);
-      } else if (data.x < 0) {
-        this.animate('walkLeft', -1);
-        //Crafty.audio.play("walk", -1);
-      } else {
-        this.animate('idle', -1);
-        //Crafty.audio.stop();
-      }});      
+  Crafty.background('#000000 url(sprites/sky2.png) repeat center center');
+  
+  Crafty.c("AI", {
+    _followSpeed: 2,
+    init: function() {
+      this.bind("EnterFrame", function() {
+          
+          if(this._x < hito_entity._x - this._followDelay*16) {
+            this.x += this._followSpeed;
+          } else if (this._x > hito_entity._x + this._followDelay*16) {
+            this.x -= this._followSpeed;
+          }
+          
+          if (this._y < hito_entity._y) {
+            this.y += this._followSpeed / this._followDelay;
+          } else if (this._y > hito_entity._y) {
+            this.y -= this._followSpeed / this._followDelay;
+          }
+        
+        });
+    },
+    followPlayer: function(val) {
+      this._followDelay = val;
+    }
+  });
+  
+  var gemsCollected = 0;         // win game, when player collects 3
+  var gemsNeededToWin = 5;
+  drawMap();                     // draw the map
       
-      hito_entity.x = 32;  // Starting Point    
-      hito_entity.y = 80;  // Starting Point     
-      
-      // --- View ---
-		Crafty.viewport.follow(hito_entity, 0, 0);  		
-      
-      // --- End Scene ---
-      
-      Crafty.defineScene("gameOver", function() {
-    	Crafty.e("2D, DOM, Text")
-          .attr({ w: 200, h: 0, x: 120, y: 0 })
-          .text("GAME OVER")
-          .css({ "text-align": "center"})
-          .textColor("#FFFFFF");
-      Crafty.e("2D, DOM, Text")
-          .attr({ w: 200, h: 0, x: 120, y: 20 })
-          .text("YOU WIN")
-          .css({ "text-align": "center"})
-          .textColor("#FF0000");
-		});
-		
-		
-           
+  // ---- Character ----   
+  var hito_entity = Crafty.e("2D, DOM, HitoSprite, SpriteAnimation, Twoway")
 
+  // Movement
+  .twoway(2, 3)
+  .gravity('Floor')
+  
+  // Animation      
+  .reel('walkRight', 500, [[0, 17], [17, 17], [34, 17], [17, 17]])
+  .reel('walkLeft', 500, [[0, 34], [17, 34], [34, 34], [17, 34]])
+  .reel('idle', 1000, [[0, 0], [17, 0], [34, 0]])
+
+  .bind('NewDirection', function(data) {
+    if (data.x > 0) {
+      this.animate('walkRight', -1);
+    } else if (data.x < 0) {
+      this.animate('walkLeft', -1);
+    } else {
+      this.animate('idle', -1);
+    }
+  })
+
+  // Collision Detection - Walls
+  .addComponent("Collision").bind('Moved', function(from) {
+    if(this.hit('Wall')) {
+        this.attr({x: from.x});
+    }
+  })   
+  
+  // Collision Detection - Gems
+  .onHit("Gem",function(hit) {
+
+    hit[0].obj.destroy();
+    gemsCollected++;   
+    Crafty.audio.play("gem", 1);
+    
+    var follow_gem = Crafty.e("2D, Canvas, SpriteAnimation, GemSprite1, AI")
+                .attr({x: hito_entity.x, y: hito_entity.y, w: 16, h: 16})
+                .reel('gemSparkle', 500, [[0, 0], [16, 0], [32, 0], [16, 0]])
+                .animate('gemSparkle', -1)
+                .followPlayer(gemsCollected);
+                
+    
+    if (gemsCollected > gemsNeededToWin) {
+      Crafty.audio.stop();
+      Crafty.enterScene("gameOver");
+    }
+  });
+  
+      
+  hito_entity.x = 32;                          // Starting Point
+  hito_entity.y = 80;                          // Starting Point
+
+  Crafty.viewport.follow(hito_entity, 0, 0);   // Keep an eye on the main man.
+});
+
+
+Crafty.enterScene("loading");
 
