@@ -6,32 +6,47 @@ Crafty.defineScene("game", function() {
 
   Crafty.background('#000000 url(sprites/sky2.png) repeat center center');
   
-  Crafty.c("AI", {
+  Crafty.c("gemFollow", {
+  		// This component enables the gem clones to follow player.
     _followSpeed: 2,
     init: function() {
-      this.bind("EnterFrame", function() {
-          
+      this.bind("EnterFrame", function() {    
+        if(playerInMotion == true) {     
+        // If player is in motion delay gems     
           if(this._x < hito_entity._x - this._followDelay*16) {
             this.x += this._followSpeed;
           } else if (this._x > hito_entity._x + this._followDelay*16) {
             this.x -= this._followSpeed;
-          }
-          
+          }      
           if (this._y < hito_entity._y) {
             this.y += this._followSpeed / this._followDelay;
           } else if (this._y > hito_entity._y) {
             this.y -= this._followSpeed / this._followDelay;
-          }
-        
-        });
+          }   
+        } else {
+        // If standing still, to prevent a strange static "tail", the gems will continue
+        // moving towards the player's center.
+          if(this._x < hito_entity._x) {
+            this.x += this._followSpeed;
+          } else if (this._x > hito_entity._x) {
+            this.x -= this._followSpeed;
+          }      
+          if (this._y < hito_entity._y) {
+            this.y += this._followSpeed / this._followDelay;
+          } else if (this._y > hito_entity._y) {
+            this.y -= this._followSpeed / this._followDelay;
+          }  
+        }
+      });
     },
     followPlayer: function(val) {
-      this._followDelay = val;
+      this._followDelay = val;   // The delay for each gem as it is collected. 
     }
   });
   
   var gemsCollected = 0;         // win game, when player collects 3
   var gemsNeededToWin = 5;
+  var playerInMotion = false;
   drawMap();                     // draw the map
       
   // ---- Character ----   
@@ -49,10 +64,13 @@ Crafty.defineScene("game", function() {
   .bind('NewDirection', function(data) {
     if (data.x > 0) {
       this.animate('walkRight', -1);
+      playerInMotion = true;
     } else if (data.x < 0) {
       this.animate('walkLeft', -1);
+      playerInMotion = true;
     } else {
       this.animate('idle', -1);
+      playerInMotion = false;
     }
   })
 
@@ -70,7 +88,7 @@ Crafty.defineScene("game", function() {
     gemsCollected++;   
     Crafty.audio.play("gem", 1);
     
-    var follow_gem = Crafty.e("2D, Canvas, SpriteAnimation, GemSprite1, AI")
+    var follow_gem = Crafty.e("2D, Canvas, SpriteAnimation, GemSprite1, gemFollow")
                 .attr({x: hito_entity.x, y: hito_entity.y, w: 16, h: 16})
                 .reel('gemSparkle', 500, [[0, 0], [16, 0], [32, 0], [16, 0]])
                 .animate('gemSparkle', -1)
