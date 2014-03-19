@@ -3,21 +3,7 @@ Crafty.init(640,480, document.getElementById('game'));
 Crafty.defineScene("game", function() {
 
   Crafty.background('#000000 url(sprites/sky.png) repeat center center');
-  
-  Crafty.c("gremlinBasicAI", {
-	  // I am intending to make the gremlins walk back and forth.
-	  // Turning around once hit a wall.
-	  // Stopping infront of player... maybe reacting if they get
-	  // stepped on.
-	  _facingRight: true,
-	  _crawlSpeed: 1,
-	  init: function () {
-		  if (this._facingRight == true) {
-			  this.x += this._crawlSpeed;
-		  }
-	  }
-  });
-  
+   
   Crafty.c("gemFollow", {
   		// This component enables the gem clones to follow player.
     _followSpeed: 2,

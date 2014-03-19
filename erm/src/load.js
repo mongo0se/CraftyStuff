@@ -58,16 +58,23 @@ Crafty.sprite("sprites/gremlin_sheet.png", {
 });
 // Gremlin AI
 Crafty.c("gremlinBasicAI", {
-	// I am intending to make the gremlins walk back and forth.
-	// Turning around once hit a wall.
-	// Stopping infront of player... maybe reacting if they get
-	// stepped on.
-	_facingRight: true,
-	_crawlSpeed: 1,
-	init: function () {
-    if (this._facingRight == true) {
-	  this.x += this._crawlSpeed;
-    }
+  // I am intending to make the gremlins walk back and forth.
+  // Turning around once hit a wall.
+  // Stopping infront of player... maybe reacting if they get
+  // stepped on.
+  _facingRight: false,
+  _crawlSpeed: 1,
+  init: function () {
+    this.bind("EnterFrame", function() { 
+      if (this._facingRight == true) {
+	    this.x -= this._crawlSpeed;
+	    this.animate('walkLeft', -1);
+      }
+      else if (this._facingRight == false) {
+	    this.x += this._crawlSpeed;
+	    this.animate('walkRight', -1);
+      }
+    });
   }
 });
 
@@ -77,7 +84,6 @@ function drawMap() {
   for (var i=0; i < map.width; i++) {  	
     for (var j=0; j < map.height; j++) {  
       iTile = j * map.width + i;       	  
-      
       // Ground      	    
       if (map.platforms[iTile] == 'q') {
         var tile_entity = Crafty.e("Wall, Floor, 2D, Canvas, tile1")
@@ -92,7 +98,6 @@ function drawMap() {
         var tile_entity = Crafty.e("Wall, Floor, 2D, Canvas, tile4")
         .attr({x: i*16, y: j*16, w: 16, h: 16}); 
       } 
-      	    	
       // Blocks
       else if (map.platforms[iTile] == 'a') {
         var tile_entity = Crafty.e("Wall, Floor, 2D, Canvas, tile5")
@@ -136,8 +141,7 @@ function drawMap() {
       } else if (map.platforms[iTile] == 'i') {
         var tile_entity = Crafty.e("2D, Canvas, tile16")
         .attr({x: i*16, y: j*16, w: 16, h: 16}); 
-      }
-      	    	
+      }    	    	
       // Items
       else if (map.platforms[iTile] == '@') {
         var tile_entity = Crafty.e("2D, Canvas, SpriteAnimation, Gem, GemSprite")
@@ -145,13 +149,23 @@ function drawMap() {
         .reel('gemSparkle', 500, [[0, 0], [16, 0], [32, 0], [16, 0]])
         .animate('gemSparkle', -1); 
       }
-
       // Creatures
       else if (map.platforms[iTile] == 'g') {
-                var tile_entity = Crafty.e("2D, Canvas, SpriteAnimation, GremlinSprite, gremlinBasicAI")
-                .attr({x: i*16, y: j*16, w: 16, h: 16})
-                .reel('walkLeft', 500, [[0, 0], [16, 0], [32, 0], [16, 0]])
-                .animate('walkLeft', -1); 
+        var tile_entity = Crafty.e("2D, DOM, Canvas, SpriteAnimation, GremlinSprite, gremlinBasicAI")
+        .attr({x: i*16, y: j*16, w: 16, h: 16})
+        .reel('walkLeft', 500, [[0, 0], [16, 0], [32, 0], [16, 0]])
+        .reel('walkRight', 500, [[0, 16], [16, 16], [32, 16], [16, 16]])
+        .animate('walkLeft', -1)
+        // Collision Detection - Walls
+        .addComponent("Collision")
+        .onHit("Wall",function(hit) {
+           if (this._facingRight == true) {
+			   this._facingRight = false; 
+		   } else {
+			   this._facingRight = true;
+		   }
+        }); 
+   
       }
     }
   }
