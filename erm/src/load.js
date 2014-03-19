@@ -8,7 +8,8 @@ Crafty.scene("loading", function() {
   Crafty.load(["sounds/gem.wav",
                "sprites/tile.png",
                "sprites/hito_sheet.png",
-               "sprites/gem.png"
+               "sprites/gem.png",
+               "sprites/gremlin_sheet.png"
   ], function() {
     Crafty.scene("start"); //when everything is loaded, run the main scene
   });
@@ -52,10 +53,12 @@ Crafty.sprite("sprites/hito_sheet.png", {
 });
 // Item Sprites
 Crafty.sprite("sprites/gem.png", {
-  GemSprite1:[0,0,16,16],
-  GemSprite2:[16,0,16,16],
-  GemSprite3:[32,0,16,16]
-      });
+  GemSprite:[0,0,16,16]
+});
+// Gremlin Sprites
+Crafty.sprite("sprites/gremlin_sheet.png", {
+  GremlinSprite:[0,0,16,16]
+});
 
       function drawMap() {
 
@@ -148,13 +151,21 @@ Crafty.sprite("sprites/gem.png", {
       	    	// Items
       	    	
       	    	else if (map.platforms[iTile] == '@') {
-                var tile_entity = Crafty.e("2D, Canvas, SpriteAnimation, Gem, GemSprite1")
+                var tile_entity = Crafty.e("2D, Canvas, SpriteAnimation, Gem, GemSprite")
                 .attr({x: i*16, y: j*16, w: 16, h: 16})
                 .reel('gemSparkle', 500, [[0, 0], [16, 0], [32, 0], [16, 0]])
                 .animate('gemSparkle', -1); 
       	    	          	    	    
       	    	}
 
+
+              else if (map.platforms[iTile] == 'g') {
+                var tile_entity = Crafty.e("2D, Canvas, SpriteAnimation, GremlinSprite")
+                .attr({x: i*16, y: j*16, w: 16, h: 16})
+                .reel('walkLeft', 500, [[0, 0], [16, 0], [32, 0], [16, 0]])
+                .animate('walkLeft', -1); 
+      	    	          	    	    
+      	    	}
               }
             }
           }

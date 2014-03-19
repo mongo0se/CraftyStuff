@@ -1,10 +1,19 @@
 Crafty.init(640,480, document.getElementById('game'));
-
-
   
 Crafty.defineScene("game", function() {
 
-  Crafty.background('#000000 url(sprites/sky2.png) repeat center center');
+  Crafty.background('#000000 url(sprites/sky.png) repeat center center');
+  
+  Crafty.c("gremlinBasicAI", {
+	  // I am intending to make the gremlins walk back and forth.
+	  // Turning around once hit a wall.
+	  // Stopping infront of player... maybe reacting if they get
+	  // stepped on.
+	  _facingRight: true,
+	  init: function () {
+		  return 0;
+	  }
+  });
   
   Crafty.c("gemFollow", {
   		// This component enables the gem clones to follow player.
@@ -88,7 +97,7 @@ Crafty.defineScene("game", function() {
     gemsCollected++;   
     Crafty.audio.play("gem", 1);
     
-    var follow_gem = Crafty.e("2D, Canvas, SpriteAnimation, GemSprite1, gemFollow")
+    var follow_gem = Crafty.e("2D, Canvas, SpriteAnimation, GemSprite, gemFollow")
                 .attr({x: hito_entity.x, y: hito_entity.y, w: 16, h: 16})
                 .reel('gemSparkle', 500, [[0, 0], [16, 0], [32, 0], [16, 0]])
                 .animate('gemSparkle', -1)
