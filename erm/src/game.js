@@ -10,8 +10,11 @@ Crafty.defineScene("game", function() {
 	  // Stopping infront of player... maybe reacting if they get
 	  // stepped on.
 	  _facingRight: true,
+	  _crawlSpeed: 1,
 	  init: function () {
-		  return 0;
+		  if (this._facingRight == true) {
+			  this.x += this._crawlSpeed;
+		  }
 	  }
   });
   
