@@ -1,0 +1,59 @@
+/* Characters */
+
+.user {
+	position: absolute;
+	top: 0;
+	left: 0;
+	background: url('/walk/img/man1_idle.png') no-repeat center center;
+	background-size: contain;
+	z-index: 9000;
+}
+
+.person {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 9000;
+	background: red;
+}
+.person p {
+	visibility: hidden;
+}
+
+.lloyd {
+	background: url('/walk/img/man2.png') no-repeat center center;
+	background-size: contain;
+}
+
+/* Terrain */
+
+.floor1 {
+	background: gray;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 1000;
+}
+
+.wall1 {
+	background: blue;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 2000;
+}
+
+/* Interface */
+body {
+	text-align: center;
+}
+
+.chatbox {
+	display: none;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	background: #fff;
+	border: 1px solid yellow;
+	z-index: 9001;
+}
