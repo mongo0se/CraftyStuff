@@ -4,13 +4,16 @@
 // Load all our external resources.
 
 Crafty.scene("loading", function() {
-  Crafty.load(["sounds/gem.wav",
-               "sprites/tile.png",
-               "sprites/hito_sheet.png",
-               "sprites/gem.png",
-               "sprites/gremlin_sheet.png"
+  Crafty.load([
+    "sounds/gem.wav",
+    "sprites/tile.png",
+    "sprites/hito_sheet.png",
+    "sprites/gem.png",
+    "sprites/gremlin_sheet.png"
   ], function() {
-    Crafty.scene("start"); //when everything is loaded, run the main scene
+
+    // when everything is loaded go to start scene
+    Crafty.scene("start");
   });
   
   // Black background with some loading text
@@ -42,7 +45,7 @@ Crafty.sprite("sprites/tile.png", {
   tile14:[16,48,16,16],
   tile15:[32,48,16,16],
   tile16:[48,48,16,16]
- });
+});
 
 // Player Sprite 
 Crafty.sprite("sprites/hito_sheet.png", {
@@ -66,13 +69,15 @@ Crafty.c("gremlinBasicAI", {
   _crawlSpeed: 1,
   init: function () {
     this.bind("EnterFrame", function() { 
+      
       if (this._facingRight == true) {
-	    this.x -= this._crawlSpeed;
-	    this.animate('walkLeft', -1);
+        this.x -= this._crawlSpeed;
+	this.animate('walkLeft', -1);
       }
+
       else if (this._facingRight == false) {
-	    this.x += this._crawlSpeed;
-	    this.animate('walkRight', -1);
+        this.x += this._crawlSpeed;
+	this.animate('walkRight', -1);
       }
     });
   }
@@ -151,21 +156,22 @@ function drawMap() {
       }
       // Creatures
       else if (map.platforms[iTile] == 'g') {
-        var tile_entity = Crafty.e("2D, DOM, Canvas, SpriteAnimation, GremlinSprite, gremlinBasicAI")
+
+	// gremlin
+        var tile_entity = Crafty.e("2D, Canvas, SpriteAnimation, GremlinSprite, gremlinBasicAI")
         .attr({x: i*16, y: j*16, w: 16, h: 16})
         .reel('walkLeft', 500, [[0, 0], [16, 0], [32, 0], [16, 0]])
         .reel('walkRight', 500, [[0, 16], [16, 16], [32, 16], [16, 16]])
-        .animate('walkLeft', -1)
+     
         // Collision Detection - Walls
         .addComponent("Collision")
         .onHit("Wall",function(hit) {
-           if (this._facingRight == true) {
-			   this._facingRight = false; 
-		   } else {
-			   this._facingRight = true;
-		   }
+          if (this._facingRight == true) {
+	    this._facingRight = false; 
+	  } else {
+            this._facingRight = true;
+	  }
         }); 
-   
       }
     }
   }

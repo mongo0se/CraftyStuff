@@ -1,34 +1,44 @@
+// initialise Crafty engine
 Crafty.init(640,480, document.getElementById('game'));
-  
 Crafty.defineScene("game", function() {
 
+  // set background
   Crafty.background('#000000 url(sprites/sky.png) repeat center center');
-   
+  
+  // create gem follow method. 
   Crafty.c("gemFollow", {
-  		// This component enables the gem clones to follow player.
+    
+    // following gem stats 
     _followSpeed: 2,
+
     init: function() {
       this.bind("EnterFrame", function() {    
+        
         if(playerInMotion == true) {     
-        // If player is in motion delay gems     
+          
+          // If player is in motion delay gems     
           if(this._x < hito_entity._x - this._followDelay*16) {
             this.x += this._followSpeed;
           } else if (this._x > hito_entity._x + this._followDelay*16) {
             this.x -= this._followSpeed;
-          }      
+          }
+      
           if (this._y < hito_entity._y) {
             this.y += this._followSpeed / this._followDelay;
           } else if (this._y > hito_entity._y) {
             this.y -= this._followSpeed / this._followDelay;
-          }   
+          }
+   
         } else {
-        // If standing still, to prevent a strange static "tail", the gems will continue
-        // moving towards the player's center.
+
+          // If standing still, to prevent a strange static "tail", the gems will continue
+          // moving towards the player's center.
           if(this._x < hito_entity._x) {
             this.x += this._followSpeed;
           } else if (this._x > hito_entity._x) {
             this.x -= this._followSpeed;
-          }      
+          }
+      
           if (this._y < hito_entity._y) {
             this.y += this._followSpeed / this._followDelay;
           } else if (this._y > hito_entity._y) {
@@ -37,8 +47,11 @@ Crafty.defineScene("game", function() {
         }
       });
     },
+
     followPlayer: function(val) {
-      this._followDelay = val;   // The delay for each gem as it is collected. 
+
+      // The delay for each gem as it is collected. 
+      this._followDelay = val;   
     }
   });
   
@@ -82,28 +95,40 @@ Crafty.defineScene("game", function() {
   // Collision Detection - Gems
   .onHit("Gem",function(hit) {
 
+    // remove gem object
     hit[0].obj.destroy();
+
+    // increment gem collected stat
     gemsCollected++;   
+
+    // play sound
     Crafty.audio.play("gem", 1);
     
+    // create a following gem character
     var follow_gem = Crafty.e("2D, Canvas, SpriteAnimation, GemSprite, gemFollow")
                 .attr({x: hito_entity.x, y: hito_entity.y, w: 16, h: 16})
                 .reel('gemSparkle', 500, [[0, 0], [16, 0], [32, 0], [16, 0]])
                 .animate('gemSparkle', -1)
                 .followPlayer(gemsCollected);
                 
-    
+    // if all gems have been collected
     if (gemsCollected > gemsNeededToWin) {
+      
+      // stop audio
       Crafty.audio.stop();
+
+      // end game
       Crafty.enterScene("gameOver");
     }
   });
   
       
-  hito_entity.x = 32;                          // Starting Point
-  hito_entity.y = 80;                          // Starting Point
+  // set starting position of main man
+  hito_entity.x = 32;
+  hito_entity.y = 80;
 
-  Crafty.viewport.follow(hito_entity, 0, 0);   // Keep an eye on the main man.
+  // set viewport to follow main man
+  Crafty.viewport.follow(hito_entity, 0, 0);
 });
 
 
