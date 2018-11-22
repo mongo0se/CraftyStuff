@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8"/>
+</head>
+<body bgcolor="#000000">
   <div id="game"
-  style="
-      position:relative;
-      z-index:1;
-      height:100%;
-      margin: 0 auto;
-   "></div>
-  <!-- <script type="text/javascript" src="https://rawgithub.com/craftyjs/Crafty/release/dist/crafty-min.js"></script> -->
+  style="position:relative; z-index:1; height:100%; margin: 0 auto;"></div>
   <script type="text/javascript" src="lib/crafty.js"></script>
+
+  <!-- screens -->
   <script type="text/javascript" src="src/map1.js"></script>
   <script type="text/javascript" src="src/load.js"></script>
   <script type="text/javascript" src="src/start.js"></script>
   <script type="text/javascript" src="src/gameOver.js"></script>
-  <script type="text/javascript" src="src/game.js"></script>
-</head>
-<body bgcolor="#000000">
 
+  <!-- init -->
+  <script type="text/javascript" src="src/game.js"></script>
+
+  <!-- logic -->
+  <script type="text/javascript" src="src/player.js"></script>
 </body>
 </html>
