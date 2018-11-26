@@ -62,6 +62,7 @@ Crafty.defineScene("game", function() {
 
   // set viewport to follow main man
   Crafty.viewport.follow(hito_entity, 0, 0);
+  Crafty.viewport.scale(1);
 });
 
 
