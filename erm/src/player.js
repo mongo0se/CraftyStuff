@@ -83,6 +83,7 @@ function hitGremlin(hit, hito) {
 
     if (hito.status == 'normal') {
       hito.status = 'head';
+      hito.animate(hito.status + 'Idle', -1);
     }
 
     // change dir of gremlin

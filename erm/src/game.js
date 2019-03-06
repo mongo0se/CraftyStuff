@@ -55,7 +55,8 @@ Crafty.defineScene("game", function() {
     }
   });
 
-  drawMap();                     // draw the map
+  // draw the map
+  drawMap();
 
   // ---- Character ----
   var hito_entity = define_hito(32, 80);
