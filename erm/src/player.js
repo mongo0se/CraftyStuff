@@ -38,17 +38,15 @@ function define_hito(startingPositionX = 0, startingPositionY = 0) {
     }
   })
 
-  // Collision Detection - Walls
+  // Collision Halt
   .addComponent("Collision").bind('Moved', function(from) {
     if(this.hit('Wall')) {
         this.attr({x: from.x});
     }
   })
 
-  // Collision Detection - Gems
+  // Collision Events
   .onHit("Gem",function(hit){ collectGem(hit, this); })
-
-  // Collision Detection - Gremlins
   .onHit("Gremlin",function(hit){ hitGremlin(hit, this); });
 
   return hito;
@@ -81,6 +79,7 @@ function hitGremlin(hit, hito) {
 
     var gremlin = hit[0].obj;
 
+    // remove body
     if (hito.status == 'normal') {
       hito.status = 'head';
       hito.animate(hito.status + 'Idle', -1);

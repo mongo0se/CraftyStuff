@@ -56,10 +56,12 @@ Crafty.sprite(17, "sprites/hito_sheet.png", {
 Crafty.sprite("sprites/gem.png", {
   GemSprite:[0,0,16,16]
 });
+
 // Gremlin Sprites
 Crafty.sprite("sprites/gremlin_sheet.png", {
   GremlinSprite:[0,0,16,16]
 });
+
 // Gremlin AI
 Crafty.c("gremlinBasicAI", {
   // I am intending to make the gremlins walk back and forth.
@@ -159,7 +161,7 @@ function drawMap() {
       else if (map.platforms[iTile] == 'g') {
 
 	      // gremlin
-        var tile_entity = Crafty.e("2D, Canvas, SpriteAnimation, Gremlin, GremlinSprite, gremlinBasicAI")
+        var tile_entity = Crafty.e("2D, Wall, Floor, Canvas, SpriteAnimation, Gremlin, GremlinSprite, gremlinBasicAI")
         .attr({x: i*16, y: j*16, w: 16, h: 16})
         .reel('walkLeft', 500, [[0, 0], [16, 0], [32, 0], [16, 0]])
         .reel('walkRight', 500, [[0, 16], [16, 16], [32, 16], [16, 16]])
