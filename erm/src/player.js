@@ -75,20 +75,9 @@ function collectGem(hit, hito) {
       .followPlayer(hito.gemsCollected);
 }
 
-function hitGremlin(hit, hito) {
 
-    var gremlin = hit[0].obj;
 
-    // remove body
-    if (hito.status == 'normal') {
-      hito.status = 'head';
-      hito.animate(hito.status + 'Idle', -1);
-    }
-
-    // change dir of gremlin
-    if (gremlin.facingRight) {
-      gremlin.facingRight = false;
-    } else {
-      gremlin.facingRight = true;
-    }
-}
+// Player Sprite
+Crafty.sprite(17, "sprites/hito_sheet.png", {
+  HitoSprite:[0,0]
+});
