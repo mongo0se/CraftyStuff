@@ -1,1 +1,18 @@
 First, attempt at getting a simple game up and running.
+
+
+# Todo
+
+- nicer diamond follow animation.
+  should follow actual path, like on grid
+
+- when player is just a  head, Onna will blow little heart powerups
+  which will play an animation and reset
+
+- diamonds will weight Hito down
+
+- when all diamonds collected, Onna will turn into a purple diamond
+- upon collecting the purple diamond, launch terrfying boss to eat everything
+
+- have to jump on gremlin to get up to onna, jumping puzzle, then end game with
+  cute animation. Maybe spawn lots of little mixed colour heads?????

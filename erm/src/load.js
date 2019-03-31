@@ -116,6 +116,7 @@ function drawMap() {
         var tile_entity = Crafty.e("2D, Canvas, tile16")
         .attr({x: i*16, y: j*16, w: 16, h: 16});
       }
+
       // Items
       else if (map.platforms[iTile] == '@') {
         var tile_entity = Crafty.e("2D, Canvas, SpriteAnimation, Gem, GemSprite")
@@ -123,9 +124,15 @@ function drawMap() {
         .reel('gemSparkle', 500, [[0, 0], [16, 0], [32, 0], [16, 0]])
         .animate('gemSparkle', -1);
       }
+
       // Creatures
       else if (map.platforms[iTile] == 'g') {
 	      define_gremlin(i, j);
+      }
+
+      // onna (goal)
+      else if (map.platforms[iTile] == 'o') {
+	      define_onna(i, j);
       }
     }
   }
